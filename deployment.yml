@@ -1,0 +1,32 @@
+#KAM:RS:Matclable:a\T:m:nl:a\S:C:-nip:-cp
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx-dep-pod
+      labels: 
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        #image: nginx:1.14.2
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: my-volume #store pods data all in this volume
+      volumes:
+        - name: my-volume #assing to this volume
+          persistentVolumeClaim:
+            claimName: local-pvc
+
+
